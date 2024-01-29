@@ -149,7 +149,11 @@ def main():
                 input_patch = batch['img'][n].cpu() * (DEFAULT_STD[:,None,None]/255) + (DEFAULT_MEAN[:,None,None]/255)
                 input_patch = input_patch.permute(1,2,0).numpy()
 
-                print('----pred_vertices----', out['pred_vertices'][n].detach().cpu().numpy())
+                print('----pred_vertices----')
+                ver = out['pred_vertices'][n].detach().cpu().numpy()
+                for i, v in enumerate(ver):
+                    print(i, v)
+
                 regression_img = renderer(out['pred_vertices'][n].detach().cpu().numpy(),
                                         out['pred_cam_t'][n].detach().cpu().numpy(),
                                         batch['img'][n],
