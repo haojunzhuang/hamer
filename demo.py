@@ -66,7 +66,7 @@ def main():
 
     # Iterate over all images in folder
     for i, img_path in enumerate(img_paths):
-        if i != 3:
+        if i != 2:
             continue
 
         img_cv2 = cv2.imread(str(img_path))

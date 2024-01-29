@@ -133,7 +133,7 @@ def create_raymond_lights() -> List[pyrender.Node]:
 
     return nodes
 
-def create_red_dot_at_vertex(vertex, size=0.005):
+def create_red_dot_at_vertex(vertex, size=0.5):
     """
     Create a small red sphere mesh at a given vertex.
     Args:
@@ -237,11 +237,12 @@ class Renderer:
         scene.add(mesh, 'mesh')
 
         # arbitary red dots
-        red_dot_indices = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  
+        red_dot_indices = np.random.choice(np.arange(len(vertices)), 200)
         for idx in red_dot_indices:
             vertex = vertices[idx] 
             red_dot_mesh = create_red_dot_at_vertex(vertex)
             scene.add(red_dot_mesh)
+            print('poi generated at', vertex)
 
         camera_pose = np.eye(4)
         camera_pose[:3, 3] = camera_translation
