@@ -133,6 +133,23 @@ def create_raymond_lights() -> List[pyrender.Node]:
 
     return nodes
 
+def create_red_dot_at_vertex(vertex, size=0.005):
+    """
+    Create a small red sphere mesh at a given vertex.
+    Args:
+        vertex (np.array): The 3D position of the vertex.
+        size (float): Radius of the sphere.
+
+    Returns:
+        pyrender.Mesh: A mesh object for the red dot.
+    """
+    sphere = trimesh.creation.uv_sphere(radius=size)
+    sphere.apply_translation(vertex)
+    red_color = np.array([1.0, 0.0, 0.0, 1.0])  # RGBA red
+    sphere.visual.vertex_colors = red_color
+    mesh = pyrender.Mesh.from_trimesh(sphere, smooth=False)
+    return mesh
+
 class Renderer:
 
     def __init__(self, cfg: CfgNode, faces: np.array):
@@ -218,6 +235,13 @@ class Renderer:
         scene = pyrender.Scene(bg_color=[*scene_bg_color, 0.0],
                                ambient_light=(0.3, 0.3, 0.3))
         scene.add(mesh, 'mesh')
+
+        # arbitary red dots
+        red_dot_indices = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  
+        for idx in red_dot_indices:
+            vertex = vertices[idx] 
+            red_dot_mesh = create_red_dot_at_vertex(vertex)
+            scene.add(red_dot_mesh)
 
         camera_pose = np.eye(4)
         camera_pose[:3, 3] = camera_translation
